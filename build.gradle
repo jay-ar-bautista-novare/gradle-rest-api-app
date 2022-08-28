@@ -58,6 +58,17 @@ jacocoTestCoverageVerification {
 				minimum = 0.90
 			}
 		}
+		rule {
+			element = 'CLASS'
+			excludes = [
+				'com.sofa.pilot.domain.BaseDomain',
+				'com.sofa.pilot.PilotApplication',
+				'com.sofa.pilot.config.PropertyLoader'
+			]
+			limit {
+				minimum = 0.90
+			}
+		}
 	}
 }
 
