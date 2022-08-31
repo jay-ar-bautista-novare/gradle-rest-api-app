@@ -105,7 +105,3 @@ Student_DELETE API Testing
      #Validation
      ${status_response}=  convert to string   ${response.status_code}
       should be equal    ${status_response}   200
-
-
-
-
