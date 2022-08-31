@@ -38,14 +38,12 @@ pipeline {
         }
 
         stage('Functional Test') {
-            stage('Functional Test') {
-                steps {
-                    sh 'pip3 install robotframework'
-                    sh 'pip3 install robotframework-jsonlibrary'
-                    sh 'pip3 install robotframework-extendedrequestslibrary'
-                    sh 'python3 -m robot src/test/robot/RequestAPI.robot'
-                    step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
-                }
+            steps {
+                sh 'pip3 install robotframework'
+                sh 'pip3 install robotframework-jsonlibrary'
+                sh 'pip3 install robotframework-extendedrequestslibrary'
+                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
+                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
             }
         }
     }
