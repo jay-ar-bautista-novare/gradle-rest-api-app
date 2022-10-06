@@ -68,28 +68,6 @@ public abstract class BaseCrudService<D extends BaseDomain<O>, I extends ApiInpu
 		}
 		throw new EntityNotFoundException(domainClass.getSimpleName() + NOT_FOUND);
 	}
-	
-		public O update2(I input, String id) {
-		boolean exists = mongoRepository.existsById(id);
-		if (exists) {
-			D domain = createDomain(input);
-			domain.setId(id);
-			D result = mongoRepository.save(domain);
-			return result.generateOutput();
-		}
-		throw new EntityNotFoundException(domainClass.getSimpleName() + NOT_FOUND);
-	}
-	
-		public O update1(I input, String id) {
-		boolean exists = mongoRepository.existsById(id);
-		if (exists) {
-			D domain = createDomain(input);
-			domain.setId(id);
-			D result = mongoRepository.save(domain);
-			return result.generateOutput();
-		}
-		throw new EntityNotFoundException(domainClass.getSimpleName() + NOT_FOUND);
-	}
 
 	@Override
 	public void delete(String id) {
