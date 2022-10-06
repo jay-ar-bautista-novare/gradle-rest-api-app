@@ -14,11 +14,11 @@ pipeline {
                 sh './gradlew clean build'
             }
         }
-        stage('Publish Unit Test Coverage Report') {
-            steps {
-                publishCoverage adapters: [jacocoAdapter('build/jacocoReport/test/jacocoTestReport.xml')]
-            }
-        }
+//        stage('Publish Unit Test Coverage Report') {
+//            steps {
+//                publishCoverage adapters: [jacocoAdapter('build/jacocoReport/test/jacocoTestReport.xml')]
+//            }
+//        }
 
         stage('Generate Docker Image') {
             steps {
@@ -37,14 +37,14 @@ pipeline {
             }
         }
 
-        stage('Functional Test') {
-            steps {
-                sh 'pip3 install robotframework'
-                sh 'pip3 install robotframework-jsonlibrary'
-                sh 'pip3 install robotframework-extendedrequestslibrary'
-                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
-                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
-            }
+//        stage('Functional Test') {
+//           steps {
+//                sh 'pip3 install robotframework'
+//                sh 'pip3 install robotframework-jsonlibrary'
+//                sh 'pip3 install robotframework-extendedrequestslibrary'
+//                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
+//                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
+//            }
         }
     }
 

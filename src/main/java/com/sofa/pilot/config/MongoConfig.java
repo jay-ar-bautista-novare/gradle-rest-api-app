@@ -38,7 +38,8 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 		String host = propertyLoader.getValueOf(MONGO_HOST);
 		String port = propertyLoader.getValueOf(MONGO_PORT);
 		ConnectionString connectionString = new ConnectionString(
-				"mongodb://" + host + ":" + port + "/" + DATABASE_SCHOOL);
+//				"mongodb://" + host + ":" + port + "/" + DATABASE_SCHOOL);
+				"mongodb://" + "13.212.120.239" + ":" + "27017" + "/" + DATABASE_SCHOOL);// For demo only
 		MongoClientSettings mongoClientSettings = MongoClientSettings.builder().applyConnectionString(connectionString)
 				.build();
 
