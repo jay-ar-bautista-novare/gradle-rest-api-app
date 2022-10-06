@@ -45,7 +45,7 @@ pipeline {
 //                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
 //                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
 //            }
-        }
+//        }
     }
 
     post {
