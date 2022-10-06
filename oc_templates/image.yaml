@@ -1,4 +1,4 @@
-kind: ImageStream
+Kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   name: gradle-rest-api-app
