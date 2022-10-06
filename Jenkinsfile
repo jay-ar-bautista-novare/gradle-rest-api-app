@@ -2,6 +2,7 @@ pipeline {
     agent any
     tools {
         jdk 'JDK17'
+        oc 'oc'
     }
 
     triggers {
@@ -47,8 +48,8 @@ pipeline {
                                       "kind": "ImageStream",
                                       "apiVersion": "image.openshift.io/v1",
                                       "metadata": [
-                                        "name": 'rest-api-sample-develop',
-                                        "namespace": "apcdevpoc-project-dev"
+                                        "name": "${oc_app_name}",
+                                        "namespace": "${oc_project}"
                                       ],
                                       "spec": [
                                         "lookupPolicy": [
