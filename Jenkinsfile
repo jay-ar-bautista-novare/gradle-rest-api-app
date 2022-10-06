@@ -34,7 +34,7 @@ pipeline {
         stage('Deploy') {
                    steps {
                       //'oc image mirror mysourceregistry.com/myimage:latest mydestinationegistry.com/myimage:latest'
-                   load "https://raw.githubusercontent.com/jay-ar-bautista-novare/gradle-rest-api-app/feature/Deploy/oc_templates/env.settings"
+                   load "oc_templates/env.settings"
                       
                     script {
                         
