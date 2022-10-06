@@ -23,7 +23,7 @@ spec:
             image-registry.openshift-image-registry.svc:5000/apcdevpoc-project-dev/rest-api-sample-develop:latest
           ports:
             - name: jolokia
-              containerPort: 8778
+              containerPort: 8779
               protocol: TCP
           resources: {}
           volumeMounts:
