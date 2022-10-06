@@ -1,14 +1,14 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: rest-api-sample-develop
-  namespace: apcdevpoc-project-dev
+  name: $oc.app.name
+  namespace: $oc.project
 spec:
   host: >-
-    rest-api-sample-develop-apcdevpoc-project-dev.apps.apcdev.openshift.scalabs.cloud
+    $oc.app.name-apcdevpoc-project-dev.apps.apcdev.openshift.scalabs.cloud
   to:
     kind: Service
-    name: rest-api-sample-develop
+    name: $oc.app.name
     weight: 100
   port:
     targetPort: 8080-tcp
