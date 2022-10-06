@@ -1,0 +1,17 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: rest-api-sample-develop
+  namespace: apcdevpoc-project-dev
+spec:
+  host: >-
+    rest-api-sample-develop-apcdevpoc-project-dev.apps.apcdev.openshift.scalabs.cloud
+  to:
+    kind: Service
+    name: rest-api-sample-develop
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+  wildcardPolicy: None
