@@ -1,0 +1,20 @@
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: gradle-rest-api-app
+  namespace: apcdevpoc-project-dev
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: >-
+          18.143.155.182:9001/repository/docker-hosted/gradle-rest-api-app:077b743d939283c5bef25193c6773dbbb9848c28
+      generation: 2
+      importPolicy:
+        insecure: true
+      referencePolicy:
+        type: Local
