@@ -1,10 +1,10 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: ${oc_app_name}
-  namespace: ${oc_project}
+  name: "${oc_app_name}"
+  namespace: "${oc_project}"
   labels:
-    app: $oc.app.name
+    app: "$oc.app.name"
 spec:
   ports:
     - name: 8080-tcp
@@ -13,4 +13,4 @@ spec:
       targetPort: 8080
   sessionAffinity: ClientIP
   selector:
-    deploymentConfig: ${oc_app_name}
+    deploymentConfig: "${oc_app_name}"
