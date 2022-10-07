@@ -77,13 +77,13 @@ pipeline {
                                 openshift.apply(ispatch)
                                 
                                 echo ('create/update deployment config')
-                                openshift.raw("apply --filename=https://raw.githubusercontent.com/jay-ar-bautista-novare/gradle-rest-api-app/feature/Deploy/oc_templates/deploymentConfig.yaml")
+                                openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")
                                 
                                 echo ('create/update service')
-                                openshift.raw("apply --filename=https://raw.githubusercontent.com/jay-ar-bautista-novare/gradle-rest-api-app/feature/Deploy/oc_templates/service.yaml")
+                                openshift.raw("apply --filename=oc_templates/service.yaml")
                                 
                                 echo ('create/update route')
-                                openshift.raw("apply --filename=https://raw.githubusercontent.com/jay-ar-bautista-novare/gradle-rest-api-app/feature/Deploy/oc_templates/route.yaml")
+                                openshift.raw("apply --filename=oc_templates/route.yaml")
 
                             }
                         }

@@ -1,26 +1,26 @@
 kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
-  name: "${oc_app_name}"
-  namespace: "${oc_project}"
+  name: rest-api-sample
+  namespace: apcdevpoc-project-dev
 spec:
   replicas: 1
   selector:
-    deploymentConfig: "${oc_app_name}"
-    name: "${oc_app_name}"
+    deploymentConfig: rest-api-sample
+    name: rest-api-sample
   template:
     metadata:
       labels:
-        deploymentConfig: "${oc_app_name}"
-        name: "${oc_app_name}"
+        deploymentConfig: rest-api-sample
+        name: rest-api-sample
     spec:
       volumes:
         - name: nexus-pv
           emptyDir: {}
       containers:
-        - name: "${oc_app_name}"
+        - name: rest-api-sample
           image: >-
-            image-registry.openshift-image-registry.svc:5000/"${oc_project}"/"${oc_app_name}":latest
+            image-registry.openshift-image-registry.svc:5000/apcdevpoc-project-dev/rest-api-sample:latest
           ports:
             - name: jolokia
               containerPort: 8778

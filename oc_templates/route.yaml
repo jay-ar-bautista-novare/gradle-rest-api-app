@@ -2,7 +2,7 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: ${oc_app_name}
-  namespace: ${env.BCNAME}
+  namespace: ${oc_project}
 spec:
   host: >-
     ${oc_app_name}-apcdevpoc-project-dev.apps.apcdev.openshift.scalabs.cloud
@@ -15,3 +15,5 @@ spec:
   tls:
     termination: edge
   wildcardPolicy: None
+env:
+     oc_project: dev
