@@ -77,13 +77,13 @@ pipeline {
                                     ]
                                 openshift.apply(ispatch)
 
-                                openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")
-                                openshift.raw("rollout latest dc/${oc_app_name}")
+                                openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")                               
                                 
                                 openshift.raw("apply --filename=oc_templates/service.yaml")
                                 
                                 openshift.raw("apply --filename=oc_templates/route.yaml")
 							
+								openshift.raw("rollout latest dc/${oc_app_name}")
 								echo ('rollout latest dc/${oc_app_name} - done.')	
 								
 								echo ('Openshift deployment complete!')
