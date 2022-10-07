@@ -9,7 +9,7 @@ spec:
       imageChangeParams:
         automatic: true
         containerNames:
-          - temp
+          - rest-api-sample
         from:
           kind: ImageStreamTag
           namespace: apcdevpoc-project-dev
