@@ -9,7 +9,7 @@ import com.sofa.pilot.dto.TeacherOutput;
 import com.sofa.pilot.service.CrudService;
 
 @RestController
-@RequestMapping(path = "/api/teachersTest2")
+@RequestMapping(path = "/api/teachersTest123")
 public class TeacherController extends BaseCrudController<TeacherInput, TeacherOutput> {
 
 	@Autowired
