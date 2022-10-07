@@ -4,8 +4,6 @@ metadata:
   name: rest-api-sample
   namespace: apcdevpoc-project-dev
 spec:
-  triggers:
-    - type: ConfigChange
   replicas: 1
   selector:
     deploymentConfig: rest-api-sample
