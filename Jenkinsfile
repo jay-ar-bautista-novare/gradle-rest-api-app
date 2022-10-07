@@ -41,7 +41,9 @@ pipeline {
                         
                         openshift.withCluster( 'openshift cluster' ) {
           
-                            openshift.withProject( 'apcdevpoc-project-dev' ) {
+                            openshift.withProject("${oc_project}") {
+                                                              
+                                echo ('Openshift deployment started')
                                 //def app = openshift.newApp("'rodexter6/rest-api-sample'","'--as-deployment-config' '--dry-run'")
                                 //--IMAGE STREAM-------------------------------------------------------------------------------------------------------------------------------------------------------                                
                                 def ispatch = [
@@ -74,16 +76,17 @@ pipeline {
                                       ]
                                     ]
                                 openshift.apply(ispatch)
-                                
-                                echo ('create/update deployment config')
+
                                 openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")
-                                
+                                openshift.raw("rollout latest dc/${oc_app_name}")
+                                echo ('rollout latest dc/${oc_app_name} - done.')
                                 echo ('create/update service')
                                 openshift.raw("apply --filename=oc_templates/service.yaml")
                                 
                                 echo ('create/update route')
                                 openshift.raw("apply --filename=oc_templates/route.yaml")
-
+								
+								echo ('Openshift deployment complete!')
                             }
                         }
                     }
