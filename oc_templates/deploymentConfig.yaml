@@ -4,6 +4,17 @@ metadata:
   name: rest-api-sample
   namespace: apcdevpoc-project-dev
 spec:
+  triggers:
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+          - temp
+        from:
+          kind: ImageStreamTag
+          namespace: apcdevpoc-project-dev
+          name: 'rest-api-sample:latest'
+    - type: ConfigChange
   replicas: 1
   selector:
     deploymentConfig: rest-api-sample
