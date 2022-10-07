@@ -80,10 +80,8 @@ pipeline {
                                 openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")
                                 openshift.raw("rollout latest dc/${oc_app_name}")
                                 
-                                echo ('create/update service')
                                 openshift.raw("apply --filename=oc_templates/service.yaml")
                                 
-                                echo ('create/update route')
                                 openshift.raw("apply --filename=oc_templates/route.yaml")
 							
 								echo ('rollout latest dc/${oc_app_name} - done.')	
