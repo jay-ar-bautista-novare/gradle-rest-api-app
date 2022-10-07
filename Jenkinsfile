@@ -60,7 +60,7 @@ pipeline {
                                             "name": 'latest',
                                             "from": [
                                               "kind": "DockerImage",
-                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/apc-image:latest"
+                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}"
                                             ],
                                             "generation": 2,
                                             "importPolicy": [
