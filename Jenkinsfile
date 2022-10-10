@@ -15,10 +15,12 @@ pipeline {
                 sh './gradlew clean build'
                 
                 //Generate Docker Image
-                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
-                    customImage.push()
-                }
+                script {
+	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
+	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
+	                    customImage.push()
+	                }
+	            }
             }
         }
 //        stage('Publish Unit Test Coverage Report') {
