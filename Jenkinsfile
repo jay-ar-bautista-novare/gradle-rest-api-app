@@ -18,6 +18,7 @@ pipeline {
                 docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
                 	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
                     customImage.push()
+                }
             }
         }
 //        stage('Publish Unit Test Coverage Report') {
