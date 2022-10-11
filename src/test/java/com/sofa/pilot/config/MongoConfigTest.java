@@ -35,6 +35,7 @@ class MongoConfigTest {
 		when(propertyLoader.getValueOf(MONGO_PORT)).thenReturn(PORT_VALUE);
 		MongoConfig mongoConfig = new MongoConfig(propertyLoader);
 
+		// update for demo only
 		MongoClient result = mongoConfig.mongoClient();
 
 		ClusterDescription clusterDescription = result.getClusterDescription();
