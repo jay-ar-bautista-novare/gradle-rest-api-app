@@ -2,7 +2,7 @@ kind: DeploymentConfig
 apiVersion: apps.openshift.io/v1
 metadata:
   name: rest-api-sample
-  namespace: apcdevpoc-project-dev
+  namespace: {{oc.project}}
 spec:
   replicas: 1
   selector:
