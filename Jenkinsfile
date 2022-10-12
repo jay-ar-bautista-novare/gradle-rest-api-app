@@ -11,39 +11,26 @@ pipeline {
     
 
     stages {
+        
         stage('Build') {
+
             steps {
                 sh './gradlew clean build'
                 
                 //Generate Docker Image
                 script {
+        			load "oc_templates/env.settings"
 	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_project}:latest")
+	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest")
 	                    customImage.push()
 	                }
 	            }
             }
         }
-//        stage('Publish Unit Test Coverage Report') {
-//            steps {
-//                publishCoverage adapters: [jacocoAdapter('build/jacocoReport/test/jacocoTestReport.xml')]
-//            }
-//        }
-
-//        stage('Generate Docker Image') {
-//            steps {
-//                script {
-//                    docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-//                        def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_project}:latest")
-//                        customImage.push()
-//                    }
-//                }
-//            }
-//        }
 
         stage('Deploy') {
                    steps {
-                      //'oc image mirror mysourceregistry.com/myimage:latest mydestinationegistry.com/myimage:latest'
+
                    load "oc_templates/env.settings"
                       
                     script {
@@ -71,7 +58,7 @@ pipeline {
                                             "name": 'latest',
                                             "from": [
                                               "kind": "DockerImage",
-                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}"
+                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest"
                                             ],
                                             "generation": 2,
                                             "importPolicy": [
