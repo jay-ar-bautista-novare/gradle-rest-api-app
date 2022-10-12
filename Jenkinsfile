@@ -21,7 +21,7 @@ pipeline {
                 script {
         			load "oc_templates/env.settings"
         			
-        			oc_app_name = (oc_app_name + env.BRANCH_NAME).replaceAll("feature/", "-")
+        			oc_app_name = (oc_app_name + env.BRANCH_NAME).replaceAll("feature/", "-").toLowerCase()
    
 	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
 	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest")
