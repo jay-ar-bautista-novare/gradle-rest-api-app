@@ -76,14 +76,21 @@ pipeline {
 								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/deploymentConfig.yaml'
 								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/deploymentConfig.yaml'
 								
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/route.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/route.yaml'
+								
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/service.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/service.yaml'
+								
+								
                                 openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")                               
                                 
                                 openshift.raw("apply --filename=oc_templates/service.yaml")
                                 
                                 openshift.raw("apply --filename=oc_templates/route.yaml")
 							
-								openshift.raw("rollout latest dc/${oc_app_name}")
-								echo ('rollout latest dc/${oc_app_name} - done.')	
+								openshift.raw("rollout latest dc/"+"${oc_app_name}")
+								echo ('rollout latest dc/'+"${oc_app_name}"+' - done.')	
 								
 								echo ('Openshift deployment complete!')
                             }
