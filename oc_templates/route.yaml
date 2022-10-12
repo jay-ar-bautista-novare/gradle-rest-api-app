@@ -2,7 +2,7 @@ kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: {{oc_app_name}}
-  namespace: {{oc_app_name}}
+  namespace: {{oc_project}}
 spec:
   host: >-
     {{oc_app_name}}.apps.apcdev.openshift.scalabs.cloud
