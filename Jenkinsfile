@@ -19,9 +19,9 @@ pipeline {
                 
                 //Generate Docker Image
                 script {
-        			load "oc_templates/env.settings"
+        			load "settings.gradle"
 	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest")
+	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${rootProject.name}:latest")
 	                    customImage.push()
 	                }
 	            }
@@ -46,8 +46,8 @@ pipeline {
                                       "kind": "ImageStream",
                                       "apiVersion": "image.openshift.io/v1",
                                       "metadata": [
-                                        "name": "${oc_app_name}",
-                                        "namespace": "${oc_project}"
+                                        "name": "${rootProject.name}",
+                                        "namespace": "${oc.project}"
                                       ],
                                       "spec": [
                                         "lookupPolicy": [
@@ -58,7 +58,7 @@ pipeline {
                                             "name": 'latest',
                                             "from": [
                                               "kind": "DockerImage",
-                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest"
+                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${rootProject.name}:latest"
                                             ],
                                             "generation": 2,
                                             "importPolicy": [
@@ -73,23 +73,23 @@ pipeline {
                                     ]
                                 openshift.apply(ispatch)
 
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/deploymentConfig.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc.project}}/'+"${oc.project}"+'/g" oc_templates/deploymentConfig.yaml'
+								sh 'sed -i "s/{{rootProject.name}}/'+"${rootProject.name}"+'/g" oc_templates/deploymentConfig.yaml'
                                 
                                 openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml") 
 								
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/route.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/route.yaml'
+								sh 'sed -i "s/{{oc.project}}/'+"${oc.project}"+'/g" oc_templates/route.yaml'
+								sh 'sed -i "s/{{rootProject.name}}/'+"${rootProject.name}"+'/g" oc_templates/route.yaml'
 
      							openshift.raw("apply --filename=oc_templates/route.yaml")
 							
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/service.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/service.yaml'
+								sh 'sed -i "s/{{oc.project}}/'+"${oc.project}"+'/g" oc_templates/service.yaml'
+								sh 'sed -i "s/{{rootProject.name}}/'+"${rootProject.name}"+'/g" oc_templates/service.yaml'
 	                           
 	                            openshift.raw("apply --filename=oc_templates/service.yaml")													
                                 
-								openshift.raw("rollout latest dc/"+"${oc_app_name}")
-								echo ('rollout latest dc/'+"${oc_app_name}"+' - done.')	
+								openshift.raw("rollout latest dc/"+"${rootProject.name}")
+								echo ('rollout latest dc/'+"${rootProject.name}"+' - done.')	
 								
 								echo ('Openshift deployment complete!')
                             }

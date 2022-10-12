@@ -1,14 +1,14 @@
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{oc_app_name}}
-  namespace: {{oc_project}}
+  name: {{rootProject.name}}
+  namespace: {{oc.project}}
 spec:
   host: >-
-    {{oc_app_name}}.apps.apcdev.openshift.scalabs.cloud
+    {{rootProject.name}}.apps.apcdev.openshift.scalabs.cloud
   to:
     kind: Service
-    name: {{oc_app_name}}
+    name: {{rootProject.name}}
     weight: 100
   port:
     targetPort: 8080-tcp
