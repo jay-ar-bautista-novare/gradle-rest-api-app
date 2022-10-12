@@ -5,7 +5,7 @@ metadata:
   namespace: apcdevpoc-project-dev
 spec:
   host: >-
-    rest-api-sample-apcdevpoc-project-dev.apps.apcdev.openshift.scalabs.cloud
+    rest-api-sample.apps.apcdev.openshift.scalabs.cloud
   to:
     kind: Service
     name: rest-api-sample

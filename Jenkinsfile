@@ -8,6 +8,7 @@ pipeline {
     triggers {
         githubPush()
     }
+    
 
     stages {
         stage('Build') {
@@ -17,7 +18,7 @@ pipeline {
                 //Generate Docker Image
                 script {
 	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
+	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_project}:latest")
 	                    customImage.push()
 	                }
 	            }
@@ -33,7 +34,7 @@ pipeline {
 //            steps {
 //                script {
 //                    docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-//                        def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
+//                        def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_project}:latest")
 //                        customImage.push()
 //                    }
 //                }
@@ -85,8 +86,8 @@ pipeline {
                                     ]
                                 openshift.apply(ispatch)
 
-								sh 'cat oc_templates/deploymentConfig.yaml | sed -i "s/{{oc_project}}/${oc_project}/g" oc_templates/deploymentConfig.yaml'
-								sh 'cat oc_templates/deploymentConfig.yaml | sed -i "s/{{oc_app_name}}/${oc_app_name}/g" oc_templates/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/deploymentConfig.yaml'
 								
                                 openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml")                               
                                 
