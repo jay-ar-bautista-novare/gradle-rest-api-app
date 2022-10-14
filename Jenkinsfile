@@ -41,8 +41,9 @@ pipeline {
                             openshift.withProject("${oc_project}") {
                                                               
                                 echo ('Openshift deployment started')
-                                //def app = openshift.newApp("'rodexter6/rest-api-sample'","'--as-deployment-config' '--dry-run'")
-                                //--IMAGE STREAM-------------------------------------------------------------------------------------------------------------------------------------------------------                                
+                
+                                openshift.raw("apply delete imagestream "+"${oc_app_name}")
+                                 
                                 def ispatch = [
                                       "kind": "ImageStream",
                                       "apiVersion": "image.openshift.io/v1",
