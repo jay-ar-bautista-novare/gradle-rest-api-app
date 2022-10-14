@@ -2,50 +2,113 @@ pipeline {
     agent any
     tools {
         jdk 'JDK17'
+        oc 'oc'
     }
 
     triggers {
         githubPush()
     }
+    
 
     stages {
+        
         stage('Build') {
+
             steps {
                 sh './gradlew clean build'
-            }
-        }
-        stage('Publish Unit Test Coverage Report') {
-            steps {
-                publishCoverage adapters: [jacocoAdapter('build/jacocoReport/test/jacocoTestReport.xml')]
-            }
-        }
-
-        stage('Generate Docker Image') {
-            steps {
+                
+                //Generate Docker Image
                 script {
-                    docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
-                        def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/gradle-rest-api-app:${env.GIT_COMMIT}")
-                        customImage.push()
-                    }
-                }
+        			load "openshift_client/env.settings"
+        			
+        			oc_app_name = (oc_app_name + env.BRANCH_NAME).replaceAll("feature/", "-").toLowerCase()
+   
+	                docker.withRegistry("https://${NEXUS_HOST}:${NEXUS_PORT}", 'nexusOssCredentials') {
+	                	def customImage = docker.build("${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest")
+	                    customImage.push()
+	                }
+	            }
             }
         }
 
         stage('Deploy') {
-            steps {
-                echo 'Deploying...' 
-            }
+                   steps {
+                                      
+                   script {
+                        
+                        openshift.withCluster( 'openshift cluster' ) {
+          
+                            openshift.withProject("${oc_project}") {
+                                                              
+                                echo ('Openshift deployment started')
+                
+                                openshift.raw("delete imagestream "+"${oc_app_name}"+" --ignore-not-found=true")
+                                 
+                                def ispatch = [
+                                      "kind": "ImageStream",
+                                      "apiVersion": "image.openshift.io/v1",
+                                      "metadata": [
+                                        "name": "${oc_app_name}",
+                                        "namespace": "${oc_project}"
+                                      ],
+                                      "spec": [
+                                        "lookupPolicy": [
+                                          "local": false
+                                        ],
+                                        "tags": [
+                                          [
+                                            "name": 'latest',
+                                            "from": [
+                                              "kind": "DockerImage",
+                                              "name": "${NEXUS_HOST}:${NEXUS_PORT}/repository/docker-hosted/${oc_app_name}:latest"
+                                            ],
+                                            "generation": 2,
+                                            "importPolicy": [
+                                              "insecure": true
+                                            ],
+                                            "referencePolicy": [
+                                              "type": "Local"
+                                            ]
+                                          ]
+                                        ]										
+                                      ]
+                                    ]
+                                openshift.apply(ispatch)
+
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/deploymentConfig.yaml'
+                                
+                                openshift.raw("apply --filename=openshift_client/deploymentConfig.yaml") 
+								
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/route.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/route.yaml'
+
+     							openshift.raw("apply --filename=openshift_client/route.yaml")
+							
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/service.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/service.yaml'
+	                           
+	                            openshift.raw("apply --filename=openshift_client/service.yaml")													
+                                
+								openshift.raw("rollout latest dc/"+"${oc_app_name}")
+								echo ('rollout latest dc/'+"${oc_app_name}"+' - done.')	
+								
+								echo ('Openshift deployment complete!!!')
+                            }
+                        }
+                    }
+                   }
         }
 
-        stage('Functional Test') {
-            steps {
-                sh 'pip3 install robotframework'
-                sh 'pip3 install robotframework-jsonlibrary'
-                sh 'pip3 install robotframework-extendedrequestslibrary'
-                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
-                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
-            }
-        }
+//        stage('Functional Test') {
+//           steps {
+//                sh 'pip3 install robotframework'
+//                sh 'pip3 install robotframework-jsonlibrary'
+//                sh 'pip3 install robotframework-extendedrequestslibrary'
+//                sh 'python3 -m robot src/test/robot/RequestAPI.robot'
+//                step([$class: 'RobotPublisher', disableArchiveOutput: false, logFileName: 'log.html', otherFiles: '', outputFileName: 'output.xml', outputPath: '', passThreshold: 100, reportFileName: 'report.html', unstableThreshold: 0])
+//            }
+//        }
     }
 
     post {

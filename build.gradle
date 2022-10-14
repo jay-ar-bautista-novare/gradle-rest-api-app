@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'jacoco'
+	id "org.sonarqube" version "3.4.0.2513"
 }
 
 group = 'com.sofa'
@@ -77,4 +78,18 @@ check.dependsOn jacocoTestCoverageVerification
 jacoco {
     toolVersion = "0.8.8"
     reportsDirectory = layout.buildDirectory.dir('jacocoReport')
+}
+
+sonarqube {
+    properties {
+        //property 'sonar.host.url', 'http://35.92.163.147:8080'
+        //property "sonar.login", "squ_a7e0d6562ca26d406fd5293f2f6b60ba8aef0bb7"
+        property "sonar.projectKey", "deploy"
+        property 'sonar.projectName', 'school'
+        //property 'sonar.java.source', 11
+        //property 'sonar.junit.reportPaths', 'build/results'
+        //property 'encoding', 'UTF-8'
+        //property 'charSet', 'UTF-8'
+        //property "sonar.coverage.jacoco.xmlReportPaths", "path.xml"
+    }
 }

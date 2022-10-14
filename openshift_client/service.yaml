@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{oc_app_name}}
+  namespace: {{oc_project}}
+  labels:
+    app: {{oc_app_name}}
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  sessionAffinity: ClientIP
+  selector:
+    deploymentConfig: {{oc_app_name}}
