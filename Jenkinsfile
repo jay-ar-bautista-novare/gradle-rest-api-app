@@ -42,7 +42,7 @@ pipeline {
                                                               
                                 echo ('Openshift deployment started')
                 
-                                openshift.raw("delete imagestream "+"${oc_app_name}")
+                                openshift.raw("delete imagestream "+"${oc_app_name}"+" --ignore-not-found=true")
                                  
                                 def ispatch = [
                                       "kind": "ImageStream",
