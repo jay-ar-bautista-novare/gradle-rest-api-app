@@ -19,7 +19,7 @@ pipeline {
                 
                 //Generate Docker Image
                 script {
-        			load "oc_templates/env.settings"
+        			load "openshift_client/env.settings"
         			
         			oc_app_name = (oc_app_name + env.BRANCH_NAME).replaceAll("feature/", "-").toLowerCase()
    
@@ -74,20 +74,20 @@ pipeline {
                                     ]
                                 openshift.apply(ispatch)
 
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/deploymentConfig.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/deploymentConfig.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/deploymentConfig.yaml'
                                 
-                                openshift.raw("apply --filename=oc_templates/deploymentConfig.yaml") 
+                                openshift.raw("apply --filename=openshift_client/deploymentConfig.yaml") 
 								
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/route.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/route.yaml'
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/route.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/route.yaml'
 
-     							openshift.raw("apply --filename=oc_templates/route.yaml")
+     							openshift.raw("apply --filename=openshift_client/route.yaml")
 							
-								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" oc_templates/service.yaml'
-								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" oc_templates/service.yaml'
+								sh 'sed -i "s/{{oc_project}}/'+"${oc_project}"+'/g" openshift_client/service.yaml'
+								sh 'sed -i "s/{{oc_app_name}}/'+"${oc_app_name}"+'/g" openshift_client/service.yaml'
 	                           
-	                            openshift.raw("apply --filename=oc_templates/service.yaml")													
+	                            openshift.raw("apply --filename=openshift_client/service.yaml")													
                                 
 								openshift.raw("rollout latest dc/"+"${oc_app_name}")
 								echo ('rollout latest dc/'+"${oc_app_name}"+' - done.')	

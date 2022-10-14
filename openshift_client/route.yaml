@@ -4,8 +4,6 @@ metadata:
   name: {{oc_app_name}}
   namespace: {{oc_project}}
 spec:
-  host: >-
-    {{oc_app_name}}.apps.apcdev.openshift.scalabs.cloud
   to:
     kind: Service
     name: {{oc_app_name}}
