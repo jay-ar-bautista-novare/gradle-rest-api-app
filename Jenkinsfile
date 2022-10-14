@@ -92,7 +92,7 @@ pipeline {
 								openshift.raw("rollout latest dc/"+"${oc_app_name}")
 								echo ('rollout latest dc/'+"${oc_app_name}"+' - done.')	
 								
-								echo ('Openshift deployment complete!')
+								echo ('Openshift deployment complete!!!')
                             }
                         }
                     }
